@@ -47,10 +47,6 @@
 #     return render_template('index.html', name=name ,movies=movies)
 
 
-
-
-
-
 import os 
 import sys
 import click
@@ -78,7 +74,6 @@ class Movie(db.Model):  # 表名将会是 movie
     id = db.Column(db.Integer, primary_key=True)    #主键
     title = db.Column(db.String(60))    #电影标题
     year = db.Column(db.String(4))    #电影年份
-
 
 # 注册为命令
 @app.cli.command()
@@ -115,12 +110,19 @@ def forge():
     for m in movies:
         movie = Movie(title=m['title'], year=m['year'])
         db.session.add(movie)
-    
     db.session.commit
     click.echo('Done.')
 
-@app.route('/')
-def index():
-    user = User.query.first()
-    movies = Movie.query.all()
-    return render_template('index.html', user=user, movies=movies)
+# # 正常访问界面
+# @app.route('/')
+# def index():
+#     user = User.query.first()
+#     movies = Movie.query.all()
+#     return render_template('index.html', user=user, movies=movies)
+
+
+# # 错误界面装饰器
+# @app.errorhandler(404)  # 传入要处理的错误代码
+# def page_not_found(e):  # 接受异常对象作为参数
+#     user = User.query.first()
+#     return render_template('404.html', user=user), 404  # 返回模板和状态码
